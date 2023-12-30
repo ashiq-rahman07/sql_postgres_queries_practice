@@ -1,4 +1,4 @@
--- Active: 1703706762928@@127.0.0.1@5432@test2
+-- Active: 1703706762928@@127.0.0.1@5432@test2@public
 --# CREATE DATABASE
 CREATE DATABASE db1;
 
@@ -15,9 +15,9 @@ CREATE TABLE student (
   first_name VARCHAR(50),
   last_name VARCHAR(50),
   cgpa NUMERIC(1,2)
-)
+);
 -- ## Rename a table name
-ALTER TABLE student RENAME TO learners
+ALTER TABLE employee RENAME TO employees;
 
 -- ## DELETE a Table
 DROP TABLE learners;
@@ -105,3 +105,65 @@ INSERT into user1 VALUES (4,'ashiq4', 'ask4@gmail.com');
 
 TRUNCATE TABLE user1;
 select * from user1;
+
+
+--Department table 
+--Each department has many employees
+CREATE TABLE Department (
+  deptId SERIAL PRIMARY KEY,
+  deptName VARCHAR(50)
+);
+
+insert into Department values(1,'IT');
+DELETE FROM Department where deptId = 1;
+SELECT * from Department;
+--Employee table 
+--Each employee belongs to a department 
+CREATE TABLE Employee(
+  empId SERIAL PRIMARY KEY,
+  empName VARCHAR(50) NOT NULL,
+  departmentID INT,
+  CONSTRAINT fk_constraint_dept
+    FOREIGN KEY (departmentID)
+    REFERENCES Department(deptId)
+);
+
+insert into Employee values(1,'Ashiq',1);
+DELETE FROM Employee where departmentID = 1;
+SELECT * from Employee;
+
+
+create table courses(
+  course_id SERIAL PRIMARY KEY,
+  course_name VARCHAR(255) not NULL,
+  description VARCHAR(255),
+  published_date DATE
+);
+
+
+--Date YYYY-MM-DD
+INSERT INTO courses(course_name,description,published_date)
+VALUES
+('PostgreSQL for developer','A complete PostgreSql courese for devolper','2020-09-13'),
+('PostgreSQL Administration','A postgre guide for DB',NULL),
+('PostgreSQL High perfromence',NULL,NULL),
+('PostgreSQL Bootcamp','Learn postgreSQL this bootcamp','2017-06-08'),
+('Mastering PostgreSQLin 21 days','Mastering PostgreSQLin 21 days for devolper','2010-10-25')
+
+--Update database table row
+--Update table_name
+--SET
+--column1 = value1
+--column2 = value2
+--WHERE CONDITION
+
+update courses
+set 
+course_name = 'PG',
+    description = NULL
+WHERE course_id =1;
+
+DELETE FROM courses 
+  WHERE course_id =1;
+
+  SELECT * FROM courses;
